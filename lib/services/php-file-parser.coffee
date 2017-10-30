@@ -165,7 +165,7 @@ module.exports =
             return null
 
         bestUse = 0
-        firstUse = 0;
+        firstUse = 0
         bestScore = 0
         placeBelow = true
         doNewLine = true
@@ -204,12 +204,12 @@ module.exports =
                     doNewLine = false
 
                     if (firstUse == 0)
-                        firstUse = bestUse = i;
-                        placeBelow = false;
+                        firstUse = bestUse = i
+                        placeBelow = false
 
                     if className.length >= matches[1].length
-                        bestUse = i;
-                        placeBelow = true;
+                        bestUse = i
+                        placeBelow = true
 
                 else if score >= bestScore
                     bestUse = i
