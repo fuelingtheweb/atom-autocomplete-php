@@ -251,7 +251,6 @@ module.exports =
      * Returns a boolean indicating if the specified class shares
      * a common namespace prefix with other use statements.
      *
-     * @param {string} editor
      * @param {TextEditor} editor                  Atom text editor.
      * @param {string}     className               Name of the class to check against.
      *
