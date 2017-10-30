@@ -235,6 +235,49 @@ module.exports =
         return (1 + (if doNewLine then 1 else 0))
 
     ###*
+     * Sort the use statements
+     *
+     * @param {TextEditor} editor
+     * @param {boolean}    allowAdditionalNewlines
+     * @param {boolean}    ensureNewLineAfterNamespace
+    ###
+    sortUseStatements: (editor, allowAdditionalNewlines, ensureNewLineAfterNamespace) ->
+        endLine = null
+        startLine = null
+        useStatements = []
+
+        for i in [0 .. editor.getLineCount() - 1]
+            line = editor.lineTextForBufferRow(i).trim()
+
+            if line.length == 0
+                continue
+
+            if line.match(@structureStartRegex)
+                break
+
+            matches = @useStatementRegex.exec(line)
+
+            if matches? and matches[1]?
+                if not startLine
+                    startLine = i
+
+                useStatement = matches[1]
+
+                if matches[2]?
+                    useStatement += ' as ' + matches[2]
+
+                useStatements.push(useStatement)
+                endLine = i
+
+        return if useStatements.length == 0
+
+        editor.transact () =>
+            editor.setTextInBufferRange([[startLine, 0], [endLine, 0]], '')
+
+            for useStatement in useStatements
+                @addUseClass(editor, useStatement, allowAdditionalNewlines, ensureNewLineAfterNamespace)
+
+    ###*
      * Returns a boolean indicating if the specified class names share a common namespace prefix.
      *
      * @param {string} firstClassName

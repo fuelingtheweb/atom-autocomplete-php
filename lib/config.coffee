@@ -109,6 +109,10 @@ module.exports =
         atom.commands.add 'atom-workspace', 'atom-autocomplete-php:import-use-statement': =>
             useStatement.importUseStatement(atom.workspace.getActivePaneItem())
 
+        # Command for sorting use statements
+        atom.commands.add 'atom-workspace', 'atom-autocomplete-php:sort-use-statements': =>
+            useStatement.sortUseStatements(atom.workspace.getActivePaneItem())
+
         # Command to reindex the current project
         atom.commands.add 'atom-workspace', 'atom-autocomplete-php:reindex-project': ->
             proxy = require './services/php-proxy.coffee'

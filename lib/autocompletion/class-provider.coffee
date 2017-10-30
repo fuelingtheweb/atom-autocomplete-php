@@ -118,6 +118,13 @@ class ClassProvider extends AbstractProvider
         return suggestions
 
     ###*
+     * Sort use statements for current file
+     * @param {TextEditor} editor
+    ###
+    sortUseStatements: (editor) ->
+        parser.sortUseStatements(editor, config.config.insertNewlinesForUseStatements, config.config.ensureNewLineAfterNamespace)
+
+    ###*
      * Adds the missing use if needed
      * @param {TextEditor} editor
      * @param {Position}   triggerPosition

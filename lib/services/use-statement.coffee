@@ -34,3 +34,12 @@ module.exports =
             ).shift()
             provider.onSelectedClassSuggestion {editor, suggestion}
         )
+
+    ###*
+     * Sort use statements for current file
+     * @param {TextEditor} editor
+    ###
+    sortUseStatements: (editor) ->
+        ClassProvider = require '../autocompletion/class-provider.coffee'
+        provider = new ClassProvider()
+        provider.sortUseStatements(editor)
