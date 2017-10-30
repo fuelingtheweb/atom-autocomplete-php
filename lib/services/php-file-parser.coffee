@@ -165,11 +165,13 @@ module.exports =
             return null
 
         bestUse = 0
+        firstUse = 0;
         bestScore = 0
         placeBelow = true
         doNewLine = true
         namespaceLine = 0
         lineCount = editor.getLineCount()
+        hasCommonNamespacePrefix = @hasCommonNamespacePrefix(editor, className)
 
         # Determine an appropriate location to place the use statement.
         for i in [0 .. lineCount - 1]
@@ -198,7 +200,18 @@ module.exports =
 
                 score = @scoreClassName(className, matches[1])
 
-                if score >= bestScore
+                if not hasCommonNamespacePrefix and not allowAdditionalNewlines
+                    doNewLine = false
+
+                    if (firstUse == 0)
+                        firstUse = bestUse = i;
+                        placeBelow = false;
+
+                    if className.length >= matches[1].length
+                        bestUse = i;
+                        placeBelow = true;
+
+                else if score >= bestScore
                     bestUse = i
                     bestScore = score
 
@@ -233,6 +246,30 @@ module.exports =
         editor.setTextInBufferRange([[lineToInsertAt, 0], [lineToInsertAt, 0]], textToInsert)
 
         return (1 + (if doNewLine then 1 else 0))
+
+    ###*
+     * Returns a boolean indicating if the specified class shares
+     * a common namespace prefix with other use statements.
+     *
+     * @param {string} editor
+     * @param {TextEditor} editor                  Atom text editor.
+     * @param {string}     className               Name of the class to check against.
+     *
+     * @return {boolean}
+    ###
+    hasCommonNamespacePrefix: (editor, className) ->
+        for i in [0 .. editor.getLineCount() - 1]
+            line = editor.lineTextForBufferRow(i).trim()
+
+            if line.length == 0
+                continue
+
+            matches = @useStatementRegex.exec(line)
+
+            if matches? and matches[1]? and @doShareCommonNamespacePrefix(className, matches[1])
+                return true
+
+        return false
 
     ###*
      * Returns a boolean indicating if the specified class names share a common namespace prefix.
