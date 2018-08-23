@@ -1,5 +1,4 @@
 GotoManager = require "./goto/goto-manager.coffee"
-TooltipManager = require "./tooltip/tooltip-manager.coffee"
 AnnotationManager = require "./annotation/annotation-manager.coffee"
 AutocompletionManager = require "./autocompletion/autocompletion-manager.coffee"
 StatusInProgress = require "./services/status-in-progress.coffee"
@@ -83,9 +82,6 @@ module.exports =
         @gotoManager = new GotoManager()
         @gotoManager.init()
 
-        @tooltipManager = new TooltipManager()
-        @tooltipManager.init()
-
         @annotationManager = new AnnotationManager()
         @annotationManager.init()
 
@@ -93,7 +89,6 @@ module.exports =
 
     deactivate: ->
         @gotoManager.deactivate()
-        @tooltipManager.deactivate()
         @annotationManager.deactivate()
         @autocompletionManager.deactivate()
         proxy.deactivate()
