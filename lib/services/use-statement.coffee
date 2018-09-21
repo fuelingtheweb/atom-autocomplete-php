@@ -12,6 +12,11 @@ module.exports =
         ClassProvider = require '../autocompletion/class-provider.coffee'
         provider = new ClassProvider()
         word = editor.getWordUnderCursor()
+
+        if word == '('
+            editor.getLastCursor().moveRight();
+            word = editor.getWordUnderCursor()
+
         regex = new RegExp('\\\\' + word + '$');
 
         suggestions = provider.fetchSuggestionsFromWord(word)
